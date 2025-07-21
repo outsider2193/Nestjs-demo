@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { CreateSignupDto } from "./dto/usersignup.dto";
-import { CreateUserLoginDto } from "./dto/userlogin.dto";
+import { CreateSignupDto } from "../dto/usersignup.dto";
+import { CreateUserLoginDto } from "../dto/userlogin.dto";
+import { UpdateUserDto } from "src/dto/updateuser.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -43,7 +44,7 @@ export class AuthController {
         return { message: "deleted user:", result }
     }
     @Put("update/:id")
-    async update(@Param("id") id: number, @Body() updateDto: Partial<CreateSignupDto>) {
+    async update(@Param("id") id: number, @Body() updateDto: UpdateUserDto) {
         const result = await this.authService.updateUsersById(id, updateDto)
         return { message: "updated user:", result }
     }

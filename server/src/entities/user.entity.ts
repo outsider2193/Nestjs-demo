@@ -13,6 +13,8 @@ export class User {
     password: string;
     @Column()
     age: number
+    @Column({ default: "user" })
+    role: string
 
 
 }

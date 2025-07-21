@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, Param, UnauthorizedException } from "@nestjs/common";
-import { CreateSignupDto } from "./dto/usersignup.dto";
-import { CreateUserLoginDto } from "./dto/userlogin.dto";
+import { CreateSignupDto } from "../dto/usersignup.dto";
+import { CreateUserLoginDto } from "../dto/userlogin.dto";
 import * as bcrypt from "bcrypt";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "./user.entity";
+import { User } from "../entities/user.entity";
+import { UpdateUserDto } from "src/dto/updateuser.dto";
 
 
 @Injectable({})
@@ -71,7 +72,7 @@ export class AuthService {
         return { id };
     }
 
-    async updateUsersById(id: number, updateDto: Partial<CreateSignupDto>) {
+    async updateUsersById(id: number, updateDto: UpdateUserDto) {
         const existingUser = await this.userRepo.findOne({ where: { id } });
         if (!existingUser) {
             throw new NotFoundException(`No user with this id ${id} found`);
