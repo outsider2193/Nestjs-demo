@@ -16,16 +16,16 @@ import { userCreate } from './user/user.module';
     }),
       userAuth, userCreate,
     TypeOrmModule.forRoot({
-        type: 'mysql',
-        host: "localhost",
-        port: 3306,
-        username: "root",
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        entities: [User],
-        synchronize: true
+      type: 'mysql',
+      host: "database-1.cpcikw0cez7g.ap-south-1.rds.amazonaws.com",
+      port: 3306,
+      username: "admin",
+      password: process.env.RDS_DB_PASSWORD,
+      database: process.env.RDS_DB_NAME,
+      entities: [User],
+      synchronize: true
 
-      })
+    })
     ]
 
 
