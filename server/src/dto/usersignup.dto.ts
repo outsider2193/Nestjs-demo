@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
+import { IsEmail, IsIn, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
 
 export class CreateSignupDto {
 
@@ -18,5 +18,10 @@ export class CreateSignupDto {
     @IsNotEmpty()
     @IsNumber()
     age: number
+
+    // @IsNotEmpty()
+    // @IsString()
+    // @IsIn(["user", "admin"])
+    // role: string
 
 }

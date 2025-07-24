@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { User } from './entities/user.entity';
 import { userCreate } from './user/user.module';
+import { JwtModule } from '@nestjs/jwt';
 
 
 
@@ -14,7 +15,15 @@ import { userCreate } from './user/user.module';
     [ConfigModule.forRoot({
       isGlobal: true
     }),
-      userAuth, userCreate,
+      userAuth,
+      userCreate,
+
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: "2d" }
+    }),
+    
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: "database-1.cpcikw0cez7g.ap-south-1.rds.amazonaws.com",

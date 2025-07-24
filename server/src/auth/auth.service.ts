@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException, Param, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, Param, UnauthorizedException } from "@nestjs/common";
 import { CreateSignupDto } from "../dto/usersignup.dto";
 import { CreateUserLoginDto } from "../dto/userlogin.dto";
 import * as bcrypt from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../entities/user.entity";
@@ -12,13 +13,14 @@ import { UpdateUserDto } from "src/dto/updateuser.dto";
 export class AuthService {
     constructor(
         @InjectRepository(User)
-        private userRepo: Repository<User>
+        private userRepo: Repository<User>,
+        private jwtService: JwtService
     ) { }
 
     async signup(signupDto: CreateSignupDto) {
         const userExist = await this.userRepo.findOne({ where: { email: signupDto.email } });
         if (userExist) {
-            throw new NotFoundException("User already exists!");
+            throw new ConflictException("User already exists!");
         }
         const hashedPassword = await bcrypt.hash(signupDto.password, 10);
         const newUser = this.userRepo.create({
@@ -29,8 +31,9 @@ export class AuthService {
         })
 
         const savedUser = await this.userRepo.save(newUser);
+        const { password, ...rest } = savedUser;
 
-        return { data: savedUser }
+        return { data: rest }
 
     }
 
@@ -43,10 +46,15 @@ export class AuthService {
         if (!isMatching) {
             throw new UnauthorizedException("Invalid password");
         }
+        const payload = { id: user.id, email: user.email, role: user.role }
 
-        return { data: user }
+        const token = await this.jwtService.signAsync(payload);
+        console.log("jwttoken:", token);
+
+        return { data: user, token }
     }
 
+    
     async getAllUsers() {
         const allUsers = await this.userRepo.find();
         if (!allUsers || allUsers.length === 0) {
