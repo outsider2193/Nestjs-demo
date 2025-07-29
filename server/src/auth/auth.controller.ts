@@ -9,13 +9,12 @@ import { RolesGuard } from "./guard/role.guard";
 import { Roles } from "src/common/decorator/roles.decorator";
 
 @Controller("auth")
-@UseGuards(AuthGuard, RolesGuard)
 export class AuthController {
     constructor(private authService: AuthService, private jwtservice: JwtService) { }
 
 
     @Post("register")
-    // @HttpCode(201)
+
     async registerUser(@Body() signupDto: CreateSignupDto) {
         const result = await this.authService.signup(signupDto)
         return {
@@ -24,7 +23,9 @@ export class AuthController {
         }
     }
 
+
     @Post("login")
+
     async loginUser(@Body() loginDto: CreateUserLoginDto) {
         const loginResult = await this.authService.login(loginDto)
         return {
@@ -36,6 +37,7 @@ export class AuthController {
 
     @Get("allusers")
     @Roles("admin")
+    @UseGuards(AuthGuard,RolesGuard)
     async allUsers() {
         const result = await this.authService.getAllUsers();
         return { message: "all users:", result }
@@ -43,18 +45,21 @@ export class AuthController {
 
     @Get("usersbyid/:id")
     @Roles("admin")
+    @UseGuards(AuthGuard, RolesGuard)
     async byId(@Param("id") id: number) {
         const result = await this.authService.getUsersById(id);
         return { message: "users by id:", result }
     }
     @Delete("delete/:id")
     @Roles("admin")
+    @UseGuards(AuthGuard,RolesGuard)
     async delete(@Param("id") id: number) {
         const result = await this.authService.deleteUsersById(id);
         return { message: "deleted user:", result }
     }
     @Put("update/:id")
     @Roles("admin")
+    @UseGuards(AuthGuard,RolesGuard)
     async update(@Param("id") id: number, @Body() updateDto: UpdateUserDto) {
         const result = await this.authService.updateUsersById(id, updateDto)
         return { message: "updated user:", result }

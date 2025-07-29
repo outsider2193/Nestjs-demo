@@ -23,14 +23,14 @@ import { JwtModule } from '@nestjs/jwt';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "2d" }
     }),
-    
+
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: "database-1.cpcikw0cez7g.ap-south-1.rds.amazonaws.com",
+      host: "localhost",
       port: 3306,
-      username: "admin",
-      password: process.env.RDS_DB_PASSWORD,
-      database: process.env.RDS_DB_NAME,
+      username: "root",
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [User],
       synchronize: true
 
