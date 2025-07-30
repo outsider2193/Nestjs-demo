@@ -34,7 +34,7 @@ export default function Login() {
                 navigate("/createuser")
             }
             toast.success("Login succesful")
-            // reset();
+            reset();
 
 
         } catch (error: any) {
