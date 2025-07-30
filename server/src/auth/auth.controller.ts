@@ -36,16 +36,16 @@ export class AuthController {
 
 
     @Get("allusers")
-    @Roles("admin")
-    @UseGuards(AuthGuard,RolesGuard)
+    // @Roles("admin")
+    // @UseGuards(AuthGuard,RolesGuard)
     async allUsers() {
         const result = await this.authService.getAllUsers();
         return { message: "all users:", result }
     }
 
     @Get("usersbyid/:id")
-    @Roles("admin")
-    @UseGuards(AuthGuard, RolesGuard)
+    // @Roles("admin")
+    // @UseGuards(AuthGuard, RolesGuard)
     async byId(@Param("id") id: number) {
         const result = await this.authService.getUsersById(id);
         return { message: "users by id:", result }
